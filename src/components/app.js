@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from "react";
-import { createDB, getData, addData, deleteData } from "./indexeddb";
+import { createDB, getData, addData, deleteData, getFilteredData } from "./indexeddb";
 function app() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -9,6 +9,8 @@ function app() {
   const [selectedRow, setSelectedRow] = useState({});
   const [data, setData] = useState("ADD");
   const [buttonClicked, setbutton] = useState("");
+  const [minValue,setMinValue] = useState('');
+  const [maxValue,setMaxValue] = useState('');
   useEffect(() => {
     createDB("UnifoIndexedDB", 1);
     getAllData();
@@ -38,13 +40,25 @@ function app() {
     await addData(obj, obj.key);
     getAllData();
   };
-  const handleDelete = (selected) => {
-    deleteData(selected);
+  const handleDelete = async (selected) => {
+    await deleteData(selected);
     getAllData();
   };
+  const handleFilter = async () => {
+    const filteredData= await getFilteredData(minValue,maxValue)
+    setAllData(filteredData)
+    setMaxValue('')
+    setMinValue('')
+  }
   return (
     <div className="row" style={{ padding: 100 }}>
       <div className="col-md-6">
+        <div style={{display:"flex", justifyContent:"space-between", marginBottom:"5px"}}>
+            <input type="number" value={minValue} onChange={(e)=>setMinValue(e.target.value)} className="form-control" style={{width:"200px"}} placeholder="Enter min price"/>
+            <input type="number" value={maxValue} onChange={(e)=>setMaxValue(e.target.value)} className="form-control" style={{width:"200px"}} placeholder="Enter max price"/>
+            <button className="btn btn-info" onClick={handleFilter}>Filter</button>
+            <button className="btn btn-secondary" onClick={getAllData}>clear</button>
+        </div>
         <table className="table table-bordered">
           <thead>
             <tr>
