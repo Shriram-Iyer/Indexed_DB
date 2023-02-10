@@ -32,7 +32,7 @@ function app() {
     let obj = {
       key: key ? key : allData[allData.length - 1].key + 1,
       prodName: name,
-      price: price,
+      price: parseInt(price),
       img: img
     };
     await addData(obj, obj.key);
