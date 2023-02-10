@@ -149,6 +149,17 @@ function app() {
               <button className="btn btn-primary mt-2" onClick={handleSubmit}>
                 {data}
               </button>
+              <button 
+              className="btn btn-primary mt-2 float-end" 
+              onClick={()=>{
+                setbutton(''); 
+                setName(''); 
+                setPrice(''); 
+                setImg('')
+                }}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
